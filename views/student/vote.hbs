@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>E - VOTING</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/template/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/4d231c993f.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body id="page-top" >
+
+    <!-- Page Wrapper -->
+    <div id="wrapper" >
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color:#012840;">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center text-warning justify-content-center" href="/home">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fa-brands fa-slack"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3"> E - VOTING</sup></div>
+            </a>
+
+            <!-- Divider -->
+            {{!-- <hr class="sidebar-divider my-0"> --}}
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading text-warning">
+                Dashboard
+            </div>
+
+            <!-- Nav Item - How to vote -->
+            <li class="nav-item " >
+                <a class="nav-link " href="/home">
+                    <i class="fa-solid fa-table-list"></i>
+                    <span>How to vote</span></a>
+            </li>
+
+            <!-- Nav Item - Vote now -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/vote">
+                    <i class="fa-solid fa-check-to-slot"></i>
+                    <span>Vote now</span></a>
+            </li>
+
+            <!-- Nav Item - Ballot -->
+            <li class="nav-item">
+                <a class="nav-link" href="/ballot">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span>Ballot</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {{!-- style="background-color:#012840;" --}}
+                <nav class="navbar navbar-expand navbar-light bg-light topbar mb-4 static-top shadow" > 
+
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{#each userData}} {{ name }}  {{/each}}</span>
+                                {{#each userData}}
+                                <img class="img-profile rounded-circle" src="/{{ user_avatar }} ">
+                                {{/each}}
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="/profile">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+                
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
+                       <h1 class="h3 mb-0 text-warning "> <strong>Vote Now</strong></h1> 
+                    </div>
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+                        
+                        <!-- President Area -->
+                        <div class="col-xl-12 col-lg-7">
+                            <div class="card text-white shadow mb-4" style="color: #04668C;">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #04668C;">
+                                    <h6 class="m-0 font-weight-bold" >{{#if notVoted}}<i class="fa-solid fa-user"></i> President {{/if}} {{#if alreadyVoted}} Voting Status {{/if}}   </h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    {{!-- user not voted yet --}}
+                                    {{#if notVoted}}
+                                    <div class="row">
+                                        
+                                        {{#each sampleData}}
+                                        <div class="col-xl-3">
+                                            <div class="card" style="color: #04668C;">
+                                                
+                                                    <img class="card-img-top" src="/img/{{candidate_image}}" alt="Card image" style="width:100%">
+                                                    <div class="card-body">
+                                                    <h4 class="card-title">{{ candidate_name }}</h4>
+                                                    <form action="/auth/view" method="POST">
+                                                    <input type="hidden" value="{{ id }}" name="candidate_id">
+                                                    <p class="card-text">See profile...</p>
+                                                    <button class="btn btn-info" type="submit" style="width: 100%" >View</button>
+                                                    </form>
+                                                    
+                                                    </div>
+                                                </div>
+                                                <br>
+                                        </div>
+                                        {{/each}}                                        
+                                    </div> 
+                                    <br>
+                                    <form action="/auth/verify-signature" method="POST">
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <select class="form-control" name="candidate_id" required>
+                                                        <option value="">Choose your desire candidate for Presidential Position...</option>
+                                                        {{#each sampleData}}
+                                                        <option value="{{ id }}">{{ candidate_name }}  </option>
+                                                        {{/each}}
+                                                        <option value="Abstain">Abstain</option>
+                                                    </select>
+                                                        <br>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <button class="btn btn-info" type="submit" style="width: 100%">Vote</button>
+                                                </div>       
+                                            </div>  
+                                    </form>   
+                                    {{/if}} 
+                                    {{!-- user already voted. --}}
+                                    {{#if alreadyVoted}} 
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <br><br>
+                                                <center>
+                                                    <h1 class="text-info">Thank you for voting.</h1>
+                                                    <h6 class="text-info">to view your e-ballot just <a href="/ballot" class="text-danger">click here</a></h6>
+                                                <h1><i class="fa-solid fa-circle-check text-success"></i></h1>
+                                                </center>
+                                            <br><br>
+                                        </div>
+                                    </div>
+                                    {{/if}}                           
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+
+                    <!-- Content Row -->
+                    
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; E-VOTING 2022</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="/auth/logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/template/vendor/jquery/jquery.min.js"></script>
+    <script src="/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/template/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/template/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="/template/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/template/js/demo/chart-area-demo.js"></script>
+    <script src="/template/js/demo/chart-pie-demo.js"></script>
+
+</body>
+
+</html>

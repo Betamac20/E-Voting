@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>E - VOTING</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/template/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/4d231c993f.js" crossorigin="anonymous"></script>
+    <!-- Custom styles for this page -->
+    <link href="/template/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top" >
+
+    <!-- Page Wrapper -->
+    <div id="wrapper" >
+
+        <!-- Sidebar -->
+        {{> adminnavbar}}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {{!-- style="background-color:#012840;" --}}
+                <nav class="navbar navbar-expand navbar-light bg-light topbar mb-4 static-top shadow" > 
+
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{#each userData}} {{ name }}  {{/each}}</span>
+                                {{#each userData}}
+                                <img class="img-profile rounded-circle" src="/{{ user_avatar }} ">
+                                {{/each}}
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="/admin-profile">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+                
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
+                       <h1 class="h3 mb-0 text-warning "> <strong>Election</strong></h1> 
+                    </div>
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+                        
+                        <!-- Election Area -->
+                        <div class="col-xl-12 col-lg-7">
+                            <div class="card text-white shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #04668C;">
+                                    <h6 class="m-0 font-weight-bold" ><i class="fa-solid fa-check-to-slot fa-sm fa-fw mr-2"></i> Election</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body text-dark">
+
+                                    <div class="row">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Department</th>
+                                                    <th>Start Date & Time</th>
+                                                    <th>End Date & Time</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Department</th>
+                                                    <th>Start Date & Time</th>
+                                                    <th>End Date & Time</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                {{#each electionData}}
+                                                <tr>
+                                                    <td> {{ election_title }} </td>
+                                                    <td> {{ election_department }} </td>
+                                                    <td> {{ dateFormat election_start_date_time "YYYY-MM-DD, h:mm:ss A" }} </td>
+                                                    <td> {{ dateFormat election_end_date_time "YYYY-MM-DD, h:mm:ss A" }} </td>
+                                                    <th> {{ status }} </th>
+                                                    <td> 
+                                                            <form action="/auth/admin-election-edit" method="POST">
+                                                                <input type="hidden" value="{{ id }}" name="election_id">
+                                                                <button class="btn btn-info btn-sm float-left" type="submit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                            </form>
+                                                            <form action="/auth/admin-election-delete" method="POST">
+                                                                <input type="hidden" value="{{ id }}" name="election_id">
+                                                                <button class="btn btn-danger btn-sm float-right" type="submit"><i class="fa-solid fa-trash"></i></button>
+                                                            </form>
+                                                    </td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                       
+                                        
+                                        
+                                        
+                                    </div> {{!-- end of row --}}
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; E-VOTING 2022</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+<div class="modal fade" id="candidateProfile" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <form action="/auth/admin-edit" method="POST">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4 class="modal-title text-info" id="exampleModalLabel"><strong>Edit Election</strong></h4>
+                {{#each editElection}}
+                <h3><span class="badge bg-secondary text-white"> {{ status }} </span></h3>
+                {{/each}}
+                </div>
+                <div class="modal-body">
+
+                    {{#if statusExpired}}
+                    <div class="alert alert-info">
+                       <h4><strong> <i class="fa-solid fa-circle-info"></i> &nbsp;&nbsp; <i> The election has been expired. </i></strong></h4>
+                    </div>
+                    {{/if}}
+                    {{#if statusOngoing}}
+                    
+                    <div class="row">
+                        {{#each editElection}}
+                        <div class="col-xl-12 col-lg-7 py-3">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Title of Election </div>
+                                                <input type="text" class="form-control" value="{{ election_title }}" name="election_title">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-7 py-3">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Department <i class="float-right text-danger">Cannot change</i> </div>
+                                                <input type="text" class="form-control" value="{{ election_department }}" name="election_department" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                   
+                     {{/each}}
+                    </div> 
+
+                    <div class="row">
+                    
+                    
+                        <div class="col-xl-6 col-lg-7 py-3">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Start Date </div>
+                                            {{#each editElection}}
+                                                <input type="date" id="election_start_date" min="{{ dateFormat election_start_date_time 'YYYY-MM-DD' }}"  class="form-control" value="{{ dateFormat election_start_date_time 'YYYY-MM-DD' }}" name="election_start_date">
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-7 py-3">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Start Time </div>
+                                                {{#each editElection}}
+                                                <input type="time" class="form-control" value="{{ dateFormat election_start_date_time 'HH:mm:ss' }}" name="election_start_time">
+                                                {{/each}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                   
+                    
+                    </div>
+
+                    <div class="row">
+                    {{#each editElection}}
+                    
+                        <div class="col-xl-6 col-lg-7 py-3">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">End Date</div>
+                                                <input type="date" id="election_start_date" min="{{ dateFormat election_start_date_time 'YYYY-MM-DD' }}"  class="form-control" value="{{ dateFormat election_end_date_time 'YYYY-MM-DD' }}" name="election_end_date">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-7 py-3">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">End Time </div>
+                                                <input type="time" class="form-control" value="{{ dateFormat election_end_date_time 'HH:mm:ss' }}" name="election_end_time">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                          <input type="hidden" value="{{ id }}" name="election_id">         
+                    {{/each}}
+                    </div>
+                    {{/if}}
+                    
+                </div>
+                <div class="modal-footer">
+                    {{#if statusExpired}}
+                    <a href="/admin-election"><button class="btn btn-secondary" type="button" >Cancel</button></a>                    
+                    {{/if}}
+                    {{#if statusOngoing}}
+                    <button class="btn btn-info" type="submit" >Update</button>
+                    <a href="/admin-election"><button class="btn btn-secondary" type="button" >Cancel</button></a>                    
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/template/vendor/jquery/jquery.min.js"></script>
+    <script src="/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/template/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/template/js/sb-admin-2.min.js"></script>
+
+
+    <!-- Page level plugins -->
+    <script src="/template/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/template/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/template/js/demo/datatables-demo.js"></script>
+
+    <script type="text/javascript">
+        $(window).on('load', function() {
+            $('#candidateProfile').modal('show');    
+        });
+    </script>
+
+    {{!-- <script>
+
+    var date = new Date();
+    var day = date.getDate();
+    var month = (date.getMonth())+1;
+    var year = date.getUTCFullYear();
+
+    if (day < 10) {
+    day = "0"+day;
+    }
+
+    if (month < 10) {
+    month = "0"+month;
+    }
+
+    var minDate = year+"-"+month+"-"+day;
+
+
+    document.getElementById("election_start_date").setAttribute('min', minDate);
+    document.getElementById("election_end_date").setAttribute('min', minDate);
+
+    console.log(minDate);
+
+    </script> --}}
+
+</body>
+
+</html>
